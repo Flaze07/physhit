@@ -16,9 +16,10 @@ class makeview:
             dataamplitude.append(self.amplitude * math.sin(self.omega*x - self.constant*self.distance))
         amplitude   = dataamplitude
         plot.plot(time, amplitude)
+        plot.style.use('seaborn-dark')
         plot.title('Gelombang')
         plot.xlabel('Waktu')
         plot.ylabel('Amplitudo ')
         plot.grid(True, which='both')
-        plot.axhline(y=0, color='k')
+        plot.axhline(y=0, color='r')
         plot.show()
