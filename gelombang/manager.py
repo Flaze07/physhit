@@ -1,55 +1,82 @@
-import Tkinter as tk
+from tkinter import *
 import numpy as np
 import math
 import time
-def cm_to_pixel(cm):#every 10 pixels are 1 cm
-    return cm*10
-
-
-def deg_to_rad(deg):
-    return deg * (math.pi / 180)
-
-def rad_to_deg(rad):
-    return rad * (180 / math.pi)
-
-def y_parabola(amplitude, omega, time, constant, distance):
-    return amplitude * math.sin(omega*time - constant*distance)
+from wave import makeview
 
 class Manager:
     def __init__(self):
-        self.root = tk.Tk()
-        self.root.title("Gelombang")
-        self.root.pack_propagate(0)
-        self.root.geometry('1920x1680')
+        self.root = Tk()
 
-        self.canvas = tk.Canvas(self.root)
-        self.canvas.pack()
+        self.root.title("Masukkan data - data Gelombang !")
+        self.root["padx"] = 40
+        self.root["pady"] = 20       
 
-        self.lbl = tk.Label(self.canvas,text="Gelombang") #Start of Freddie Code
-        self.lam = tk.Label ( text = "Lambda    : " , font=("arial",16,"bold")).grid(row=0)
-        self.omg  = tk.Label( text = "Omega     : ", font=("arial",16,"bold")).grid(row=2)
-        self.amp = tk.Label ( text = "Amplitude : " , font=("arial",16,"bold")).grid(row=1)
-        self.cm1  = tk.Label( text = "cm" , font=("arial",16,"bold")).grid(row=0,column = 3)
-        self.cm2 = tk.Label ( text = "cm" , font = ("arial",16,"bold")).grid(row=1 ,column = 3)
-        inp_lam = tk.Entry (self.root)  # lambda input
-        inp_omg = tk.Entry (self.root) # frekuensi input
-        inp_ampli = tk.Entry(self.root) # amplitudo input
-        inp_lam.grid(row=0, column =1)
-        inp_omg.grid(row = 2 , column = 1 )
-        inp_ampli.grid(row = 1 , column = 1 )
-        button = tk.Button(self.root, text = "Enter",font = ("arial",16,"bold"),width = 10) #Insert Button Command Here!
-        button.grid(row = 3 , column = 0  )
-        button.pack
-        temp = self.root.winfo_width()//2
-        self.lbl.grid(column=temp, row=0)
-        self.lbl.pack()
+        # Create a text frame to hold the text Label and the Entry widget
+        self.textFrame_1 = Frame(self.root)
+        self.textFrame_2 = Frame(self.root)
+        self.textFrame_3 = Frame(self.root)
+        self.textFrame_4 = Frame(self.root)
+        self.textFrame_5 = Frame(self.root)
 
-        self.lm = cm_to_pixel(10)
-        self.amplitude = cm_to_pixel(5)
-        self.omega = 1
+        #Create a Label in textFrame
+        self.entryLabel = Label(self.textFrame_1)
+        self.entryLabel["text"] = "Masukkan Amplitudo :"
+        self.entryLabel.pack(side=LEFT)
 
-        self.run()
-    #def make_line(self):
+        self.entryLabel = Label(self.textFrame_2)
+        self.entryLabel["text"] = "Masukkan Omega :"
+        self.entryLabel.pack(side=LEFT)
 
-    def run(self):
+        self.entryLabel = Label(self.textFrame_3)
+        self.entryLabel["text"] = "Masukkan Waktu :"
+        self.entryLabel.pack(side=LEFT)
+
+        self.entryLabel = Label(self.textFrame_4)
+        self.entryLabel["text"] = "Masukkan Konstanta :"
+        self.entryLabel.pack(side=LEFT)
+
+        self.entryLabel = Label(self.textFrame_5)
+        self.entryLabel["text"] = "Masukkan Jarak :"
+        self.entryLabel.pack(side=LEFT)
+
+        # Create an Entry Widget in textFrame
+        self.entryamplitudo = Entry(self.textFrame_1)
+        self.entryamplitudo["width"] = 50
+        self.entryamplitudo.pack(side=LEFT)
+
+        self.entryomega = Entry(self.textFrame_2)
+        self.entryomega["width"] = 50
+        self.entryomega.pack(side=LEFT)
+
+        self.entrytime = Entry(self.textFrame_3)
+        self.entrytime["width"] = 50
+        self.entrytime.pack(side=LEFT)
+
+        self.entryconstant = Entry(self.textFrame_4)
+        self.entryconstant["width"] = 50
+        self.entryconstant.pack(side=LEFT)
+
+        self.entrydistance = Entry(self.textFrame_5)
+        self.entrydistance["width"] = 50
+        self.entrydistance.pack(side=LEFT)
+
+        self.textFrame_1.pack()
+        self.textFrame_2.pack()
+        self.textFrame_3.pack()
+        self.textFrame_4.pack()
+        self.textFrame_5.pack()
+
+        self.button = Button(self.root, text="Tampilkan Gelombang", command=self.displayText)
+        self.button.pack() 
+
         self.root.mainloop()
+    def displayText(self):
+        global amplitude,omega,time,constant,distance
+        amplitude=float(self.entryamplitudo.get())
+        time=float(self.entrytime.get())
+        omega=float(self.entryomega.get())
+        constant=float(self.entryconstant.get())
+        distance=float(self.entrydistance.get())
+        graph=makeview(amplitude,omega,time,constant,distance )
+        graph.show()
